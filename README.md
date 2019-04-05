@@ -1,3 +1,0 @@
-# latihan
-A song
-s
