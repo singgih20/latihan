@@ -1,22 +1,15 @@
 <?php 
-session_start();
-if(!isset($_SESSION["admin"]) ){
-	header("Location: login.php");
-	exit;
-}
-
 
 require 'functions.php';
-$assistant = query("SELECT * FROM assistant ORDER BY jam ASC");
-
+$mahasiswa = query("SELECT * FROM mahasiswa");
 
 if(isset($_POST["cari"]) ){
 	$keyword = $_POST['keyword'];
-	$assistant = query("SELECT * FROM assistant WHERE nama LIKE '%$keyword%' OR kode LIKE '%$keyword%'
-		OR shift LIKE '%$keyword%'	");
+	$mahasiswa = query("SELECT * FROM mahasiswa WHERE nama LIKE '%$keyword%' OR nim LIKE '%$keyword%'
+		OR kelas LIKE '%$keyword%' OR tanggal LIKE '%$keyword%' OR keterangan LIKE '%$keyword%'
+
+		");
 }
-
-
 
  ?>
 
@@ -27,11 +20,10 @@ if(isset($_POST["cari"]) ){
  		Halaman Awal
  	</title>
  </head>
-
  <body>
  
-<h1>Rekap Absen Assistant Lab EAD</h1>
-<a href="request.php">Lihat daftar request absensi</a> <br>
+<h1>Rekap Absen Mahasiswa</h1>
+<?php echo date("H:i:s . Y:M:d"); ?>
 <a href="tambah.php">Tambah Data Rekap Absen Mahasiswa</a>
 <br><br>
 
@@ -46,20 +38,22 @@ if(isset($_POST["cari"]) ){
 	<tr>
 		<th>No.</th>
 		<th>Nama</th>
-		<th>Kode Assistant</th>
-		<th>Jam Masuk</th>
+		<th>NIM</th>
+		<th>Kelas</th>
 		<th>Tanggal</th>
+		<th>Keterangan</th>
 		<th>Aksi</th>
 	</tr>
 	<?php $no = 1; ?>
-	<?php foreach($assistant as $mhs): ?>
+	<?php foreach($mahasiswa as $mhs): ?>
 		<tr>
 			<td><?= $no; ?></td>
 			<td><?= $mhs["nama"]; ?></td>
-			<td><?= $mhs["kode"]; ?></td>
-			<td><?= $mhs["jam"]; ?></td>
-			<td><?= $mhs["tanggal"];?> </td>
-		<td>
+			<td><?= $mhs["nim"]; ?></td>
+			<td><?= $mhs["kelas"];?></td>
+			<td><?= $mhs["tanggal"]; ?></td>
+			<td><?= $mhs["keterangan"];?> </td>
+			<td>
 				<a href="edit.php?id= <?= $mhs["id"]; ?>"> Edit Data | | </a>
 				<a href="hapus.php?id= <?= $mhs["id"]; ?>" onclick="return confirm('Apakah anda yakin?')">Hapus Data</a>
 			</td>
@@ -69,6 +63,5 @@ if(isset($_POST["cari"]) ){
 
 
 </table>
-<a href="logout.php">Logout</a>
  </body>
  </html>
